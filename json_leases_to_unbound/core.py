@@ -5,7 +5,6 @@ import time
 import sys
 import subprocess
 import shutil
-from argparse import ArgumentParser
 import ipaddress
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
