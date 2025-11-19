@@ -1,5 +1,8 @@
 # json-leases-to-unbound
 
+[![CI](https://github.com/cjuniorfox/json-leases-to-unbound/actions/workflows/run-tests.yml/badge.svg)](https://github.com/cjuniorfox/json-leases-to-unbound/actions/workflows/run-tests.yml)
+[![codecov](https://codecov.io/gh/cjuniorfox/json-leases-to-unbound/branch/main/graph/badge.svg)](https://codecov.io/gh/cjuniorfox/json-leases-to-unbound)
+
 A Python service that monitors JSON lease files and automatically synchronizes them to an Unbound DNS server in real-time. This tool bridges the gap between DHCP/SLAAC lease management systems and local DNS resolution.
 
 ## Features
@@ -10,6 +13,7 @@ A Python service that monitors JSON lease files and automatically synchronizes t
 - 🔌 **Flexible Unbound Integration** - Supports local and remote Unbound servers with custom config files
 - 📝 **Comprehensive Logging** - Configurable log levels for debugging and monitoring
 - ✅ **Well Tested** - 91% code coverage with 33 passing tests
+  - Coverage badge above powered by Codecov (uploaded from GitHub Actions)
 
 ## How It Works
 
