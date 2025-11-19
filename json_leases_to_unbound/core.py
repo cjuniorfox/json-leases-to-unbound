@@ -15,9 +15,11 @@ UNBOUND_CONTROL_PATH = None
 active_leases = {}
 
 class DirChangeHandler(FileSystemEventHandler):
-    def __init__(self, source_dir):
+    def __init__(self, source_dir, server=None, config_file=None):
         self.source_dir = source_dir
-        logging.debug(f"DirChangeHandler initialized with source: {source_dir}")
+        self.server = server
+        self.config_file = config_file
+        logging.debug(f"DirChangeHandler initialized with source: {source_dir}, server: {server}, config_file: {config_file}")
 
     def on_any_event(self, event):
         global active_leases, default_domain
@@ -26,13 +28,13 @@ class DirChangeHandler(FileSystemEventHandler):
         if event.event_type  in ("created", "modified") and not event.is_directory:
             try:
                 logging.debug(f"Process leases from file: {event.src_path}")
-                process_lease_file(event.src_path)
+                process_lease_file(event.src_path, server=self.server, config_file=self.config_file)
             except Exception as e:
                 logging.error(f"Error reading file {event.src_path}: {e}")
         if event.event_type == "deleted":
             try:
                 logging.debug(f"Lease file {event.src_path} has been deleted")
-                delete_leases_from_file(event.src_path)
+                delete_leases_from_file(event.src_path, server=self.server, config_file=self.config_file)
             except Exception as e:
                 logging.error(f"Error deleting entries from file {event.src_path}")
 
@@ -280,7 +282,7 @@ def main(log_level: str, source: str, domain: str, unbound_server: str = None, c
 
     initial_run(source, server=unbound_server, config_file=config_file)
 
-    event_handler = DirChangeHandler(source)
+    event_handler = DirChangeHandler(source, server=unbound_server, config_file=config_file)
     observer = Observer()
     observer.schedule(event_handler, path=source, recursive=False)
     observer.start()
